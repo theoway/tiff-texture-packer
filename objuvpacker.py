@@ -83,7 +83,7 @@ def main():
         mtl_lines.insert(0,"# Textures packed with a simple packer")
 
     new_mtl_lines = []
-    outname = output_name+"_full.png"
+    outname = output_name+"_full.tif"
     for line in mtl_lines:
         if line.startswith("newmtl"):
             name = line[7:]
@@ -291,9 +291,12 @@ def main():
         new_mtl.write("\n".join(new_mtl_lines))
     #output_image.save(outname, format="PNG")
     print(output_image.shape)
-    new_dataset = rasterio.open('texture.tif', 'w', driver='GTiff',
+    print(output_image.dtype)
+    print(output_image.min(), output_image.max())
+    new_dataset = rasterio.open(outname, 'w', driver='GTiff',
                             height = output_image.shape[1], width = output_image.shape[2],
-                            count=output_image.shape[0], dtype=str(output_image.dtype))
+                            count=output_image.shape[0], dtype="int8")
+                            # count=output_image.shape[0], dtype=str(output_image.dtype))
 
     new_dataset.write(output_image)
 
